@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "properties": {
+      "email": {
+        "type": "string"
+      },
+      "createdAt": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "email",
+      "createdAt"
+    ],
+    "additionalProperties": false
+  }

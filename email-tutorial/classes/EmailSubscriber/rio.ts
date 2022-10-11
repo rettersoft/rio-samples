@@ -305,6 +305,23 @@ public async unSubscribe(body?: SubscribeInputModel, options?: RDKOptions): Prom
         body,
     })
 }
+
+/**
+ * calls sendMailWeekly on EmailSubscriber
+ * @param {any} body - payload
+ * @param {RDKOptions} options - other method call parameters
+ * @returns {Promise<RetterResponse<any>>}
+ */
+public async sendMailWeekly(body?: any, options?: RDKOptions): Promise<RetterResponse<any> | undefined> {
+    return await this._rdk.methodCall({
+        ...options,
+        classId: 'EmailSubscriber',
+        instanceId: this.instanceId,
+        lookupKey: this.lookupKey,
+        methodName: 'sendMailWeekly',
+        body,
+    })
+}
 }
 }
 
@@ -313,5 +330,6 @@ export namespace RioAssets {
     SUBSCRIBE = 'subscribe',
     PRE_SUBSCRIBE = 'preSubscribe',
     UN_SUBSCRIBE = 'unSubscribe',
+    SEND_MAIL_WEEKLY = 'sendMailWeekly',
 }
 }

@@ -6,6 +6,18 @@ const client = new postmark.ServerClient(
 	"32812873-aa64-463f-b06e-3166cb5cd6e7"
 );
 
+export async function getSubscribers(
+	data: Data<any, any, any, { subscribers: Subscriber[] }>
+): Promise<Data> {
+	data.response = {
+		statusCode: 200,
+		body: {
+			subscribers: data.state.private.subscribers,
+		},
+	};
+	return data;
+}
+
 export async function preSubscribe(
 	data: Data<Subscriber, any, any, { preSubscribers: Subscriber[] }>
 ): Promise<Data> {
@@ -112,35 +124,6 @@ export async function unSubscribe(
 			},
 		};
 	}
-
-	return data;
-}
-
-export async function sendMailToSubscribers(
-	data: Data<any, any, any, { subscribers: Subscriber[] }>
-): Promise<Data> {
-	let sendMailReturnValue;
-	// create mail template
-	const mailTemplate = {
-		From: "denizhan@rettermobile.com",
-		To: "",
-		Subject: "Hi From Retter!",
-		TextBody: "Hi there, here is your news this week: \n Blah Blah Blah",
-	};
-
-	// send mail to all subscribers
-	data.state.private.subscribers.forEach((subscriber) => {
-		mailTemplate.To = subscriber.email;
-		sendMailReturnValue = client.sendEmail(mailTemplate);
-	});
-
-	data.response = {
-		statusCode: 200,
-		body: {
-			status: "Mail sent to all subscribers",
-			sendMailReturnValue: sendMailReturnValue,
-		},
-	};
 
 	return data;
 }

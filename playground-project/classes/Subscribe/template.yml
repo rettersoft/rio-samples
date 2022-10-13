@@ -2,6 +2,8 @@ init: index.init
 getState: index.getState
 getInstanceId: index.getInstanceId
 methods:
+  - method: getSubscribers
+    handler: subscribe.getSubscribers
   - method: preSubscribe
     inputModel: Subscriber
     handler: subscribe.preSubscribe

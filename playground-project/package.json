@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -b ."
+    "build": "tsc -b .",
+    "i": "for d in classes/*/ ; do (cd \"$d\" && echo \"installing dependencies for $d\" && npm i); done",
+    "test": "ava"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "14.17.2"
+    "@types/node": "14.17.2",
+    "ava": "3.14.0"
   }
 }

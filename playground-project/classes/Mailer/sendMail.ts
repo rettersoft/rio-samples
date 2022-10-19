@@ -2,7 +2,7 @@ import RDK, { Data, InitResponse, Response, StepResponse } from "@retter/rdk";
 import { Subscriber, Classes } from "./rio";
 const postmark = require("postmark");
 const rdk = new RDK();
-const client = new postmark.ServerClient("process.env.POSTMARK_API_KEY");
+const client = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
 export async function sendMailToSubscribers(
 	data: Data<any, any, any, { subscribers: Subscriber[] }>
@@ -23,6 +23,7 @@ export async function sendMailToSubscribers(
 	// send mail to all subscribers
 	subscribersArray.forEach((subscriber) => {
 		mailTemplate.To = subscriber.email;
+		console.log(subscriber.email);
 	});
 
 	data.response = {

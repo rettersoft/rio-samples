@@ -1,0 +1,7 @@
+
+> retter@1.0.0 test
+> ava "/Users/denizhantoprak/Desktop/Developing/Retter/rio-samples/playground-project/classes/Subscribe/__tests__/subscribers.test.ava.ts" "-m=" "preSubscribe" "=" "not" "already" "registered" "ok"
+
+
+  ✖ Couldn’t find any files to test
+

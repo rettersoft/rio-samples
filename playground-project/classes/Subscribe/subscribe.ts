@@ -4,6 +4,9 @@ const postmark = require("postmark");
 const rdk = new RDK();
 const client = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN); // you put yours in Settings -> Enviroment (c.retter.io)
 
+/**
+ * @description returns the subscribers list for other classes to use
+ */
 export async function getSubscribers(
 	data: Data<any, any, any, { subscribers: Subscriber[] }>
 ): Promise<Data> {
@@ -16,7 +19,10 @@ export async function getSubscribers(
 	return data;
 }
 
-export async function preSubscribe(
+/**
+ * @description creates a preSubscriber and sends a confirmation email
+ */
+export async function subscribe(
 	data: Data<
 		Subscriber,
 		any,
@@ -57,8 +63,34 @@ export async function preSubscribe(
 			From: "denizhan@rettermobile.com",
 			To: preSubscriber.email,
 			Subject: "Confirm your subscription",
-			HtmlBody: `<html> <body> <h1>Confirm your subscription</h1> <p>Click <a href="https://${data.context.projectId}.api.retter.io/${data.context.projectId}/CALL/Subscribe/subscribe/defaultInstance?email=${preSubscriber.email}">Validate</a> to confirm your subscription</p> </body> </html>`,
-			TextBody: `Confirm your subscription by clicking the link below \n https://${data.context.projectId}.api.retter.io/${data.context.projectId}/CALL/Subscribe/subscribe/defaultInstance?email=${preSubscriber.email}`,
+			HtmlBody: `
+			<h1>Welcome</h1>
+			<p>Thanks for trying Rio News. We’re thrilled to have you on board. To finish your register process, validate your account by clicking the link below:</p>
+			<!-- Action -->
+			<table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
+			  <tr>
+				<td align="center">
+				  <!-- Border based button https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
+				  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+					  <td align="center">
+						<table border="0" cellspacing="0" cellpadding="0">
+						  <tr>
+							<td>
+								<a href="https://${data.context.projectId}.api.retter.io/${data.context.projectId}/CALL/Subscribe/validate/defaultInstance?email=${preSubscriber.email}">Validate</a>
+							</td>
+						  </tr>
+						</table>
+					  </td>
+					</tr>
+				  </table>
+				</td>
+			  </tr>
+			</table>
+			</table>
+			`,
+			//HtmlBody: `<html> <body> <h1>Confirm your subscription</h1> <p>Click <a href="https://${data.context.projectId}.api.retter.io/${data.context.projectId}/CALL/Subscribe/validate/defaultInstance?email=${preSubscriber.email}">Validate</a> to confirm your subscription</p> </body> </html>`,
+			TextBody: `Confirm your subscription by clicking the link below \n https://${data.context.projectId}.api.retter.io/${data.context.projectId}/CALL/Subscribe/validate/defaultInstance?email=${preSubscriber.email}`,
 		});
 
 		data.response = {
@@ -73,7 +105,10 @@ export async function preSubscribe(
 	return data;
 }
 
-export async function subscribe(
+/**
+ * @description validates a preSubscriber and adds it to subscribers and removes from preSubscribers
+ */
+export async function validate(
 	data: Data<
 		Subscriber,
 		any,
@@ -103,7 +138,7 @@ export async function subscribe(
 		data.response = {
 			statusCode: 200,
 			body: {
-				status: "New subscriber added to subscribers",
+				status: `New subscriber ${subscriber.email} added to subscribers`,
 			},
 		};
 	}

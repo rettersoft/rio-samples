@@ -4,12 +4,12 @@ getInstanceId: index.getInstanceId
 methods:
   - method: getSubscribers
     handler: subscribe.getSubscribers
-  - method: preSubscribe
-    inputModel: Subscriber
-    handler: subscribe.preSubscribe
   - method: subscribe
     inputModel: Subscriber
     handler: subscribe.subscribe
+  - method: validate
+    inputModel: Subscriber
+    handler: subscribe.validate
   - method: unSubscribe
     inputModel: Subscriber
     handler: subscribe.unSubscribe

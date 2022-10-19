@@ -4,6 +4,5 @@ getInstanceId: index.getInstanceId
 methods:
   - method: sendMailToSubscribers
     type: STATIC
-    schedule: "rate(5 minutes)"
-    #schedule: cron(0 0 6 ? * MON *)
     handler: sendMail.sendMailToSubscribers
+    schedule: rate(2 minutes)

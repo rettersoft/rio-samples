@@ -2,8 +2,11 @@ import RDK, { Data, InitResponse, Response, StepResponse } from "@retter/rdk";
 import { Subscriber, Classes } from "./rio";
 const postmark = require("postmark");
 const rdk = new RDK();
-const client = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+const client = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN); // you put yours in Settings -> Enviroment (c.retter.io)
 
+/**
+ * @description sends email to all subscribers
+ */
 export async function sendMailToSubscribers(
 	data: Data<any, any, any, { subscribers: Subscriber[] }>
 ): Promise<Data> {
@@ -11,8 +14,7 @@ export async function sendMailToSubscribers(
 	const subscribers = await subscribeInstance.getSubscribers();
 	const subscribersArray = subscribers.body.subscribers;
 
-	let sendMailReturnValue;
-	// create mail template
+	//create mail template
 	const mailTemplate = {
 		From: "denizhan@rettermobile.com",
 		To: "",
@@ -20,17 +22,18 @@ export async function sendMailToSubscribers(
 		TextBody: "Hi there, here is your news this week: \n Blah Blah Blah",
 	};
 
-	// send mail to all subscribers
-	subscribersArray.forEach((subscriber) => {
-		mailTemplate.To = subscriber.email;
-		console.log(subscriber.email);
-	});
+	await Promise.all(
+		subscribersArray.map(async (subscriber) => {
+			mailTemplate.To = subscriber.email;
+			await client.sendEmail(mailTemplate);
+		})
+	);
 
 	data.response = {
 		statusCode: 200,
 		body: {
 			status: "Mail sent to all subscribers",
-			sendMailReturnValue: sendMailReturnValue,
+			subscribersArray,
 		},
 	};
 

@@ -2,15 +2,18 @@
     "type": "object",
     "properties": {
       "email": {
-        "type": "string"
+        "type": "string",
+        "format": "email"
+      },
+      "isApproved": {
+        "type": "boolean"
       },
       "createdAt": {
         "type": "number"
       }
     },
     "required": [
-      "email",
-      "createdAt"
+      "email"
     ],
     "additionalProperties": false
   }

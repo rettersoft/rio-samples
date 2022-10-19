@@ -5,4 +5,4 @@ methods:
   - method: sendMailToSubscribers
     type: STATIC
     handler: sendMail.sendMailToSubscribers
-    schedule: rate(2 minutes)
+    schedule: cron(0 18 ? * MON-FRI *) # Monday to Friday every day 18.00
